@@ -132,3 +132,4 @@ app/test.py
 Makefile
 download/
 app/docker*
+.vscode

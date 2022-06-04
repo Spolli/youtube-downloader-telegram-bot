@@ -5,9 +5,9 @@ import youtube_dl
 import telebot
 import os
 
-TOKEN = os.environ("TOKEN") if "TOKEN" in os.environ else "5449367848:AAH3fCtqxv1Ryhp1zXI8C1jJEbMyvpff0rw"
-USERNAME = os.environ("USERNAME") if "USERNAME" in os.environ else "inutilita1@gmail.com"
-PASSWORD = os.environ("PASSWORD") if "PASSWORD" in os.environ else "9GS25!atQtM%6XTq"
+TOKEN = os.environ("TOKEN") if "TOKEN" in os.environ else ""
+USERNAME = os.environ("USERNAME") if "USERNAME" in os.environ else ""
+PASSWORD = os.environ("PASSWORD") if "PASSWORD" in os.environ else ""
 
 bot = telebot.TeleBot(TOKEN, parse_mode=None)
 
