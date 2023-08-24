@@ -8,7 +8,12 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip3 install --no-cache-dir pyTelegramBotAPI pytube3 moviepy
+RUN pip3 install --no-cache-dir pyTelegramBotAPI pytube3
+
+# Install ffmpeg
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
 
 # Make bot_script.py executable
 RUN chmod +x bot/bot_script.py

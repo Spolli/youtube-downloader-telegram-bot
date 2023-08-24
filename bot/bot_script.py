@@ -1,40 +1,37 @@
 import os
+import re
 import telebot
 from pytube import YouTube
-from moviepy.editor import VideoFileClip
 
-TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
+TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
 ALLOWED_CHAT_ID = os.environ.get('ALLOWED_CHAT_ID')
 
-bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
+bot = telebot.TeleBot(TOKEN)
 
-@bot.message_handler(func=lambda message: message.chat.id == ALLOWED_CHAT_ID)
+youtube_url_pattern = r'(https?://)?(www\.)?youtu(\.be|be\.com)/(watch\?v=|v/|embed/|.*v=)?([^&?/]+)'
+
+@bot.message_handler(func=lambda message: message.chat.id == int(ALLOWED_CHAT_ID))
 def handle_message(message):
-    if message.text.startswith("https://www.youtube.com"):
+    if re.match(youtube_url_pattern, message.text):
         try:
             youtube_url = message.text
             video = YouTube(youtube_url)
             
-            # Get the highest resolution stream available
-            stream = video.streams.get_highest_resolution()
+            audio_stream = video.streams.filter(only_audio=True).first()
             
-            # Download the video
-            bot.reply_to(message, "Downloading video...")
-            video_path = stream.download()
+            bot.reply_to(message, "Downloading audio...")
+            audio_path = audio_stream.download(output_path="audio_temp")
+            mp3_path = audio_path.replace(".webm", ".mp3")
             
-            # Convert video to MP3
-            bot.reply_to(message, "Converting to MP3...")
-            video_clip = VideoFileClip(video_path)
-            mp3_path = video_path.replace(".mp4", ".mp3")
-            video_clip.audio.write_audiofile(mp3_path)
+            # Using ffmpeg to convert audio to MP3
+            cmd = f'ffmpeg -i "{audio_path}" "{mp3_path}"'
+            os.system(cmd)
             
-            # Send the MP3 file
             bot.reply_to(message, "Sending MP3...")
             with open(mp3_path, 'rb') as mp3_file:
                 bot.send_audio(ALLOWED_CHAT_ID, mp3_file)
             
-            # Clean up downloaded files
-            os.remove(video_path)
+            os.remove(audio_path)
             os.remove(mp3_path)
             
             bot.reply_to(message, "Process complete.")
