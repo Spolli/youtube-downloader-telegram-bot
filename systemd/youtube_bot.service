@@ -1,0 +1,12 @@
+[Unit]
+Description=YouTube Bot Service
+After=network.target
+
+[Service]
+User=spolli
+WorkingDirectory=/opt/YouTubeBotApp/bot
+ExecStart=/usr/bin/python3 bot_script.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
