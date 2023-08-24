@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip3 install --no-cache-dir pyTelegramBotAPI pytube3
+RUN pip3 install --no-cache-dir pyTelegramBotAPI pytube
 
 # Install ffmpeg
 RUN apt-get update && \
