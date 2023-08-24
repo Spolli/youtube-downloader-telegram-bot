@@ -19,8 +19,8 @@ RUN apt-get update && \
 RUN chmod +x bot/bot_script.py
 
 # Set environment variables
-ENV TELEGRAM_BOT_TOKEN=5449367848:AAH3fCtqxv1Ryhp1zXI8C1jJEbMyvpff0rw
-ENV ALLOWED_CHAT_ID=958468633
+ENV TELEGRAM_BOT_TOKEN=<TG_TOKEN>
+ENV ALLOWED_CHAT_ID=<CHAT_ID>
 
 # Run the bot_script.py when the container launches
 CMD ["python3", "bot/bot_script.py"]
