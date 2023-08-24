@@ -29,7 +29,8 @@ def handle_message(message):
             
             bot.reply_to(message, "Sending MP3...")
             with open(mp3_path, 'rb') as mp3_file:
-                bot.send_audio(ALLOWED_CHAT_ID, mp3_file)
+                audio_description = f"{video.title}"
+                bot.send_audio(ALLOWED_CHAT_ID, mp3_file, caption=audio_description)
             
             os.remove(audio_path)
             os.remove(mp3_path)
