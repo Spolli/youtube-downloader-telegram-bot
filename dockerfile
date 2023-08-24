@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.8-slim-buster
+FROM linuxserver/ffmpeg:latest
 
 # Set the working directory in the container
 WORKDIR /app
