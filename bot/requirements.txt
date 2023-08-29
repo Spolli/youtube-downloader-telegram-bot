@@ -1,5 +1,5 @@
 pyTelegramBotAPI
 pytube3
 eyed3
-Pillow
+opencv-python-headless
 requests

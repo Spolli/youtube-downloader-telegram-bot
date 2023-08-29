@@ -4,7 +4,7 @@ import telebot
 from pytube import YouTube
 import requests
 from io import BytesIO
-from PIL import Image
+import cv2
 import eyed3
 
 TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
@@ -37,24 +37,22 @@ def handle_message(message):
             cmd = f'ffmpeg -i "{audio_path}" -ab 320k -f mp3 "{mp3_path}"'
             os.system(cmd)
             
-            # Fetch the thumbnail URL from video data
-            thumbnail_url = video.thumbnail_url
-            
-            # Download the thumbnail image
-            response = requests.get(thumbnail_url)
-            thumbnail_image = Image.open(BytesIO(response.content))
-            
             # Set artist information and thumbnail image in the MP3 metadata
             audiofile = eyed3.load(mp3_path)
             if '-' in video.title:
                 audio_info = video.title.split('-')
                 audiofile.tag.artist = remove_enclosed_text(audio_info[0])
                 audiofile.tag.title = remove_enclosed_text(audio_info[1])
-            
-            # Embed the thumbnail image into metadata
-            thumbnail_data = BytesIO()
-            thumbnail_image.save(thumbnail_data, format="JPEG")
-            audiofile.tag.images.set(3, thumbnail_data.getvalue(), "image/jpeg", u"Thumbnail")
+            try:
+                # Fetch the thumbnail URL from video data
+                thumbnail_url = video.thumbnail_url
+                
+                # Download the thumbnail image
+                thumbnail_image = requests.get(thumbnail_url)
+                image_data = cv2.imencode('.jpg', thumbnail_image)[1].tobytes()
+                audiofile.tag.images.set(3, image_data, "image/jpeg", u"Thumbnail") 
+            except Exception as e:
+                print(f"An error occurred: {e}")
             
             audiofile.tag.save()
             
