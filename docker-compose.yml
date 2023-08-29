@@ -1,6 +1,6 @@
 version: "3"
 services:
-  check:
+  youtuberino:
     build: 
       context: .
       dockerfile: bot/Dockerfile
