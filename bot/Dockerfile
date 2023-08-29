@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip3 install --no-cache-dir pyTelegramBotAPI pytube eyed3
+RUN pip3 install -r requirements.txt
 
 # Install ffmpeg
 RUN apt-get update && \
@@ -17,10 +17,6 @@ RUN apt-get update && \
 
 # Make bot_script.py executable
 RUN chmod +x bot/bot_script.py
-
-# Set environment variables
-ENV TELEGRAM_BOT_TOKEN=<TG_TOKEN>
-ENV ALLOWED_CHAT_ID=<CHAT_ID>
 
 # Run the bot_script.py when the container launches
 CMD ["python3", "bot/bot_script.py"]
