@@ -1,6 +1,3 @@
 pyTelegramBotAPI
 pytube3
 eyed3
-pyproject-toml
-Pillow
-requests
