@@ -1,2 +1,3 @@
 pyTelegramBotAPI
-pytube
+pytube3
+eyed3
