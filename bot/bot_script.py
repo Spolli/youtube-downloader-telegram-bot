@@ -35,18 +35,16 @@ def handle_message(message):
             os.system(cmd)
         
             # Set artist information and thumbnail image in the MP3 metadata
-            audiofile = eyed3.load(mp3_path)
             if '-' in video.title:
+                audiofile = eyed3.load(mp3_path)
                 audio_info = video.title.split('-')
                 audiofile.tag.artist = remove_enclosed_text(audio_info[0])
                 audiofile.tag.title = remove_enclosed_text(audio_info[1])
-            
-            audiofile.tag.save()
+                audiofile.tag.save()
             
             bot.reply_to(message, "Sending MP3...")
             with open(mp3_path, 'rb') as mp3_file:
-                audio_description = f"{video.title}"
-                bot.send_audio(ALLOWED_CHAT_ID, mp3_file, caption=audio_description)
+                bot.send_audio(ALLOWED_CHAT_ID, mp3_file, caption=f"{video.title}")
             os.remove(audio_path)
             os.remove(mp3_path)
         except Exception as e:
