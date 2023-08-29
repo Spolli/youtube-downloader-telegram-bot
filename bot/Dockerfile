@@ -1,22 +1,18 @@
 # Use an official Python runtime as a parent image
-FROM python:3.8-slim-buster
+FROM python:3.8-alpine
 
 # Copy the current directory contents into the container
-COPY . /app
+COPY bot/bot_script.py /app/bot_script.py
+COPY bot/requirements.txt /app/requirements.txt
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
-
-# Install ffmpeg
-RUN apt-get update && \
-    apt-get install -y ffmpeg && \
-    rm -rf /var/lib/apt/lists/*
-
-# Make bot_script.py executable
-RUN chmod +x bot_script.py
+RUN apk add update && \
+    apk add install -y ffmpeg && \
+    rm -rf /var/cache/apk/* && \
+    pip install -r /app/requirements.txt && \
+    chmod +x /app/bot_script.py
 
 # Run the bot_script.py when the container launches
-CMD ["python3", "bot_script.py"]
+CMD ["python3", "/app/bot_script.py"]
