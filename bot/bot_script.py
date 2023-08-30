@@ -18,18 +18,24 @@ def remove_enclosed_text(input_string):
 
 @bot.message_handler(func=lambda message: message.chat.id == int(ALLOWED_CHAT_ID))
 def handle_message(message):
+    if 'DEBUG' in os.environ:
+        print(message.text)
     if re.match(youtube_url_pattern, message.text):
         try:
             youtube_url = message.text
             video = YouTube(youtube_url)
             
             audio_stream = video.streams.filter(only_audio=True).first()
-            print(video.streams.filter(only_audio=True))
+            if 'DEBUG' in os.environ:
+                print(video.streams.filter(only_audio=True))
             
             bot.reply_to(message, "Downloading audio...")
             audio_path = audio_stream.download(output_path="audio_temp")
             mp3_path = audio_path.replace(".webm", ".mp3")
-            
+            if 'DEBUG' in os.environ:
+                print(f'audio_path: {audio_path}')
+                print(f'mp3_path: {mp3_path}')
+
             # Using ffmpeg to convert audio to MP3
             cmd = f'ffmpeg -i "{audio_path}" -ab 320k -f mp3 "{mp3_path}"'
             os.system(cmd)
@@ -52,4 +58,6 @@ def handle_message(message):
     else:
         bot.reply_to(message, "Please provide a valid YouTube link.")
 
-bot.polling()
+if __name__ == '__main__':
+  bot.polling()
+
