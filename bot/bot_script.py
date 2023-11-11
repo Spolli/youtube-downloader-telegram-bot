@@ -4,8 +4,9 @@ import telebot
 from pytube import YouTube
 import eyed3
 
-TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
-ALLOWED_CHAT_ID = os.environ.get('ALLOWED_CHAT_ID')
+TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN') or '5449367848:AAGy8eU4JzkiWQiUX9-p5hHiBUWRBJ2brAM'
+ALLOWED_CHAT_ID = os.environ.get('ALLOWED_CHAT_ID') or '958468633'
+DEBUG = True
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -18,21 +19,21 @@ def remove_enclosed_text(input_string):
 
 @bot.message_handler(func=lambda message: message.chat.id == int(ALLOWED_CHAT_ID))
 def handle_message(message):
-    if 'DEBUG' in os.environ:
+    if 'DEBUG' in os.environ or DEBUG:
         print(message.text)
     if re.match(youtube_url_pattern, message.text):
         try:
             youtube_url = message.text
             video = YouTube(youtube_url)
             
-            audio_stream = video.streams.filter(only_audio=True).first()
-            if 'DEBUG' in os.environ:
+            audio_stream = video.streams.filter(only_audio=True).last()
+            if 'DEBUG' in os.environ or DEBUG:
                 print(video.streams.filter(only_audio=True))
             
             bot.reply_to(message, "Downloading audio...")
             audio_path = audio_stream.download(output_path="audio_temp")
             mp3_path = audio_path.replace(".webm", ".mp3")
-            if 'DEBUG' in os.environ:
+            if 'DEBUG' in os.environ or DEBUG:
                 print(f'audio_path: {audio_path}')
                 print(f'mp3_path: {mp3_path}')
 
