@@ -9,5 +9,5 @@ services:
     environment:
       - TELEGRAM_BOT_TOKEN=5449367848:AAGy8eU4JzkiWQiUX9-p5hHiBUWRBJ2brAM
       - ALLOWED_CHAT_ID=958468633
-      - DEBUG="1"
+      #- DEBUG="1"
     restart: always
