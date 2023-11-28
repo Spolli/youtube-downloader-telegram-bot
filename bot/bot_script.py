@@ -4,7 +4,7 @@ import telebot
 from pytube import YouTube
 import eyed3
 
-TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN') or '5449367848:AAGy8eU4JzkiWQiUX9-p5hHiBUWRBJ2brAM'
+TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
 ALLOWED_CHAT_ID = os.environ.get('ALLOWED_CHAT_ID') or '958468633'
 DEBUG = True
 
