@@ -22,7 +22,7 @@ def handle_message(message):
     if 'DEBUG' in os.environ or DEBUG:
         print(message.text)
     if re.match(youtube_url_pattern, message.text):
-        try:
+        #try:
             youtube_url = message.text
             video = YouTube(youtube_url)
             
@@ -54,8 +54,8 @@ def handle_message(message):
                 bot.send_audio(ALLOWED_CHAT_ID, mp3_file, caption=f"{video.title}")
             os.remove(audio_path)
             os.remove(mp3_path)
-        except Exception as e:
-            print(f"An error occurred: {e}")
+        #except Exception as e:
+        #    print(f"An error occurred: {e}")
     else:
         bot.reply_to(message, "Please provide a valid YouTube link.")
 
